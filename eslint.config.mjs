@@ -21,7 +21,7 @@ const eslintConfig = [
   ...compat.extends('next/core-web-vitals'),
 
   // Plugin for sorting imports, exports, etc.
-  perfectionist.configs['eslint-plugin-perfectionist/recommended-natural'],
+  perfectionist.configs['recommended-natural'],
 
   // Add Prettier last to disable conflicting rules
   prettier,
@@ -29,6 +29,10 @@ const eslintConfig = [
   // custom ESLint rules
   {
     languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
+      },
       globals: {
         ...globals.browser,
         ...globals.node,
