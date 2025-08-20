@@ -1,4 +1,4 @@
-import Home from '@/features/auth/components/ui/home/home';
+import Home from '@/features/auth/presentation/ui/home/home';
 export default function Homepage() {
   return (
     <div>

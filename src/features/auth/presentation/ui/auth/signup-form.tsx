@@ -92,14 +92,14 @@ export const SignUpForm = () => {
 
               <Select
                 label="Role"
-                {...register('role')}
+                {...register('role', { setValueAs: (v) => Number(v) })}
                 disabled={isPending}
                 errorMessage={errors.role?.message}
                 isInvalid={!!errors.role}
                 placeholder="Select a role"
               >
-                {CUSTOM_ROLES.map((role) => (
-                  <SelectItem key={role}>{role}</SelectItem>
+                {CUSTOM_ROLES.map((data) => (
+                  <SelectItem key={data.value}>{data.label}</SelectItem>
                 ))}
               </Select>
 
