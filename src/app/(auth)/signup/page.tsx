@@ -1,7 +1,6 @@
 import React from 'react';
 
-import SignUpForm from '@/features/auth/components/ui/auth/signup-form';
-
+import { SignUpForm } from '@/features/auth/presentation/ui/auth';
 export default function SignUpPage() {
   return (
     <div>
