@@ -2,12 +2,6 @@ export interface AuthTokenEntity {
   accessToken: string;
 }
 
-export interface UserEntity {
-  createdAt: string;
-  email: string;
+export interface CreateUserEntity {
   id: number;
-  name: string;
-  password: string;
-  status: string;
-  updatedAt: string;
 }
