@@ -7,7 +7,7 @@ import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { login } from '@/actions/login';
+import { login } from '@/app/actions/login';
 import { loginSchema } from '@/shared/lib/zod-schemas';
 
 type LoginFormData = z.infer<typeof loginSchema>;

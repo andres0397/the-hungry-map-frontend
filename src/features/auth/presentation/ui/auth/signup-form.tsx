@@ -2,46 +2,37 @@
 
 import type React from 'react';
 
-import { Button, Card, CardBody, CardHeader, Divider, Input } from '@heroui/react';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Input,
+  Select,
+  SelectItem,
+} from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { signup } from '@/actions/register';
+import { useAuth } from '@/features/auth/application/use-auth';
+import { CUSTOM_ROLES } from '@/shared/lib';
 import { signupSchema } from '@/shared/lib/zod-schemas';
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-export default function SignUpForm() {
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
+export const SignUpForm = () => {
+  const { error, isPending, onSubmit, success } = useAuth();
 
   const {
-    formState: { errors, isSubmitting },
+    formState: { errors },
     handleSubmit,
     register,
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
-
-  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-    setError(undefined);
-    setSuccess(undefined);
-    startTransition(() => {
-      signup(data)
-        .then((res) => {
-          setError(res.error);
-          setSuccess(res.success);
-        })
-        .catch((err) => {
-          setError(err.error);
-          setSuccess(err.success);
-        });
-    });
-  };
 
   return (
     <div className="w-full">
@@ -98,20 +89,42 @@ export default function SignUpForm() {
                 errorMessage={errors.confirmPassword?.message}
                 isInvalid={!!errors.confirmPassword}
               />
+
+              <Select
+                label="Role"
+                {...register('role')}
+                disabled={isPending}
+                errorMessage={errors.role?.message}
+                isInvalid={!!errors.role}
+                placeholder="Select a role"
+              >
+                {CUSTOM_ROLES.map((role) => (
+                  <SelectItem key={role}>{role}</SelectItem>
+                ))}
+              </Select>
+
+              <Input
+                label="Phone"
+                type="number"
+                {...register('phone')}
+                disabled={isPending}
+                errorMessage={errors.phone?.message}
+                isInvalid={!!errors.phone}
+              />
             </div>
 
-            {error && <p className="text-red-500 mt-2">{error}</p>}
+            {error && <p className="text-red-500 mt-2 opacity-0 hidden">{error}</p>}
 
-            {success && <p className="text-green-500 mt-2">{success}</p>}
+            {success && <p className="text-green-500 mt-2 opacity-0 hidden">{success}</p>}
 
             <Button
               className="w-full mt-6 bg-amber-500"
               disabled={isPending}
-              isLoading={isSubmitting}
+              isLoading={isPending}
               size="lg"
               type="submit"
             >
-              {isSubmitting ? 'Creating Account...' : 'Create Account'}
+              {isPending ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
 
@@ -132,4 +145,4 @@ export default function SignUpForm() {
       </Card>
     </div>
   );
-}
+};
