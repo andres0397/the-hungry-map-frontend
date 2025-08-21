@@ -24,7 +24,6 @@ export const signup = async (values: z.infer<typeof signupSchema>) => {
   };
 
   try {
-    //TODO: validate data from the backend to match Userentity
     const { data } = await axiosInstance.post<CreateUserEntity>('/users', mappedUserData);
 
     if (data?.id) {
