@@ -24,7 +24,7 @@ import { signupSchema } from '@/shared/lib/zod-schemas';
 type SignupFormData = z.infer<typeof signupSchema>;
 
 export const SignUpForm = () => {
-  const { error, isPending, onSubmit, success } = useAuth();
+  const { error, isPending, isSuccess, mutate } = useAuth();
 
   const {
     formState: { errors },
@@ -33,6 +33,10 @@ export const SignUpForm = () => {
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
+
+  const onSubmit = (data: SignupFormData) => {
+    mutate(data);
+  };
 
   return (
     <div className="w-full">
@@ -113,9 +117,11 @@ export const SignUpForm = () => {
               />
             </div>
 
-            {error && <p className="text-red-500 mt-2 opacity-0 hidden">{error}</p>}
+            {error && <p className="text-red-500 mt-2 opacity-0 hidden">{error.message}</p>}
 
-            {success && <p className="text-green-500 mt-2 opacity-0 hidden">{success}</p>}
+            {isSuccess && (
+              <p className="text-green-500 mt-2 opacity-0 hidden">Account created successfully</p>
+            )}
 
             <Button
               className="w-full mt-6 bg-amber-500"
